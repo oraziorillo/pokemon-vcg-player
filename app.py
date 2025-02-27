@@ -6,7 +6,7 @@ def greet(name):
 # iframe code to embed Pokemon Showdown
 iframe_code = """
 <iframe
-    src="https://play.pokemonshowdown.com/"
+    src="https://pokemonshowdown.com/"
     width="100%"
     height="800"
     style="border: none;"
@@ -18,15 +18,12 @@ def main():
     with gr.Blocks() as demo:
         gr.Markdown("# Simple Python + Pokémon Showdown Demo")
 
-        # --- Simple Python function UI ---
         gr.Markdown("### Simple Greeting Function")
         name_input = gr.Textbox(label="Enter your name here")
-        greet_button = gr.Button("Greet")
-        greet_output = gr.Textbox(label="Output")
+        greet_button = gr.Button("Play")
 
         greet_button.click(fn=greet, inputs=name_input, outputs=greet_output)
         
-        # --- Embed Pokémon Showdown ---
         gr.Markdown("### Pokémon Showdown Iframe")
         gr.HTML(iframe_code)
 
