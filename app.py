@@ -18,7 +18,6 @@ def main():
     with gr.Blocks() as demo:
         gr.Markdown("# Simple Python + Pokémon Showdown Demo")
 
-        gr.Markdown("### Simple Greeting Function")
         name_input = gr.Textbox(label="Enter your name here")
         greet_button = gr.Button("Play")
 
