@@ -22,7 +22,7 @@ def main():
         name_input = gr.Textbox(label="Enter your name here")
         greet_button = gr.Button("Play")
 
-        greet_button.click(fn=greet, inputs=name_input, outputs=greet_output)
+        greet_button.click(fn=greet, inputs=name_input)
         
         gr.Markdown("### Pokémon Showdown Iframe")
         gr.HTML(iframe_code)
