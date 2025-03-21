@@ -6,7 +6,7 @@ def greet(name):
 # iframe code to embed Pokemon Showdown
 iframe_code = """
 <iframe
-    src="https://play.pokemonshowdown.com/"
+    src="https://pshowdown-test-client.hf.space"
     width="100%"
     height="800"
     style="border: none;"
