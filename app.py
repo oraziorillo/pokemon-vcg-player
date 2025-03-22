@@ -2,8 +2,8 @@ import gradio as gr
 from poke_env import Player, ShowdownServerConfiguration, AccountConfiguration
 
 
-account_config = AccountConfiguration("vehlgavekcghvea", "super-secret-password")
-player = Player(server_configuration=ShowdownServerConfiguration, account_configuration=account_config)
+#account_config = AccountConfiguration("vehlgavekcghvea", "super-secret-password")
+#player = Player(server_configuration=ShowdownServerConfiguration, account_configuration=account_config)
 
 
 def greet(name):
