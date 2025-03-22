@@ -1,7 +1,6 @@
 import gradio as gr
 from poke_env.player.random_player import RandomPlayer
-from poke_env.server_configuration import ShowdownServerConfiguration
-from poke_env.player_configuration import PlayerConfiguration
+from poke_env import AccountConfiguration, ShowdownServerConfiguration
 import asyncio
 import threading
 
@@ -16,12 +15,9 @@ def start_random_player():
     asyncio.set_event_loop(loop)
     global random_player
     
-    # Configure the random player with a default name
-    player_config = PlayerConfiguration("RandomBot", None)
     random_player = RandomPlayer(
-        player_configuration=player_config,
-        server_configuration=server_config,
-        battle_format="gen8randombattle"
+        player_configuration=AccountConfiguration("huggingface_random", None)
+        server_configuration=ShowdownServerConfiguration,
     )
     
     # Start the player
