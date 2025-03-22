@@ -1,13 +1,60 @@
 import gradio as gr
-from poke_env import Player, ShowdownServerConfiguration, AccountConfiguration
+from poke_env.player.random_player import RandomPlayer
+from poke_env.server_configuration import ShowdownServerConfiguration
+from poke_env.player_configuration import PlayerConfiguration
+import asyncio
+import threading
 
+# Set up the random player
+server_config = ShowdownServerConfiguration()
+random_player = None
+player_thread = None
 
-#account_config = AccountConfiguration("vehlgavekcghvea", "super-secret-password")
-#player = Player(server_configuration=ShowdownServerConfiguration, account_configuration=account_config)
+# Function to start the random player in a separate thread
+def start_random_player():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    global random_player
+    
+    # Configure the random player with a default name
+    player_config = PlayerConfiguration("RandomBot", None)
+    random_player = RandomPlayer(
+        player_configuration=player_config,
+        server_configuration=server_config,
+        battle_format="gen8randombattle"
+    )
+    
+    # Start the player
+    loop.run_until_complete(random_player.accept_challenges(max_concurrent_battles=1))
 
+# Start the random player in a background thread
+def initialize_random_player():
+    global player_thread
+    player_thread = threading.Thread(target=start_random_player)
+    player_thread.daemon = True
+    player_thread.start()
 
-def greet(name):
-    return f"Hello, {name}!"
+# Function to send a battle invite
+async def send_battle_invite(username):
+    if random_player is None:
+        return f"Error: Random player not initialized. Try again."
+    
+    try:
+        # Send a challenge to the user
+        await random_player.send_challenges(username, n_challenges=1)
+        return f"Battle invitation sent to {username}! Check the Pokemon Showdown interface below."
+    except Exception as e:
+        return f"Error sending challenge: {str(e)}"
+
+# Wrapper for the async function to use in Gradio
+def invite_to_battle(username):
+    if not username.strip():
+        return "Please enter a valid username."
+    
+    loop = asyncio.new_event_loop()
+    result = loop.run_until_complete(send_battle_invite(username))
+    loop.close()
+    return result
 
 # iframe code to embed Pokemon Showdown
 iframe_code = """
@@ -21,15 +68,23 @@ iframe_code = """
 """
 
 def main():
+    # Initialize the random player when the app starts
+    initialize_random_player()
+    
     with gr.Blocks() as demo:
-        gr.Markdown("# Simple Python + Pokémon Showdown Demo")
-
-        name_input = gr.Textbox(label="Enter your name here")
-        greet_button = gr.Button("Play")
-
-        greet_button.click(fn=greet, inputs=name_input)
+        gr.Markdown("# Pokémon Showdown Battle Bot")
         
-        gr.Markdown("### Pokémon Showdown Iframe")
+        with gr.Row():
+            with gr.Column():
+                gr.Markdown("### Enter your Pokémon Showdown username to receive a battle invitation:")
+                name_input = gr.Textbox(label="Your Pokémon Showdown Username", placeholder="Enter the username you're using on Showdown")
+                battle_button = gr.Button("Send Battle Invitation")
+                result_text = gr.Textbox(label="Result", interactive=False)
+                
+                battle_button.click(fn=invite_to_battle, inputs=name_input, outputs=result_text)
+        
+        gr.Markdown("### Pokémon Showdown Interface")
+        gr.Markdown("Log in to Pokémon Showdown in the interface below, using the same username you entered above.")
         gr.HTML(iframe_code)
 
     return demo
