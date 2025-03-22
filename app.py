@@ -5,7 +5,6 @@ import asyncio
 import threading
 
 # Set up the random player
-server_config = ShowdownServerConfiguration()
 random_player = None
 player_thread = None
 
