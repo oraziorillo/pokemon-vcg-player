@@ -19,8 +19,6 @@ def start_random_player():
         server_configuration=ShowdownServerConfiguration,
     )
     
-    # Start the player
-    loop.run_until_complete(random_player.accept_challenges(max_concurrent_battles=1))
 
 # Start the random player in a background thread
 def initialize_random_player():
