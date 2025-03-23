@@ -15,7 +15,7 @@ def start_random_player():
     global random_player
     
     random_player = RandomPlayer(
-        account_configuration=AccountConfiguration("huggingface_rdm1", None),
+        account_configuration=AccountConfiguration("huggingface_random", "huggingface_random"),
         server_configuration=ShowdownServerConfiguration,
     )
     
