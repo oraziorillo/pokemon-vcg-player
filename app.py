@@ -3,7 +3,6 @@ import gradio as gr
 import asyncio
 import threading
 import os
-from dotenv import load_dotenv
 
 # Import poke-env components
 from poke_env.player import Player, RandomPlayer, AccountConfiguration, ShowdownServerConfiguration
@@ -11,8 +10,6 @@ from poke_env.player import Player, RandomPlayer, AccountConfiguration, Showdown
 # Import your custom agent
 from agent import OpenAIAgent
 
-# Load environment variables (.env file should contain OPENAI_API_KEY)
-load_dotenv()
 
 # --- Global variables for players and thread ---
 random_player: Player | None = None
