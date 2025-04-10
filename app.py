@@ -125,7 +125,7 @@ async def send_battle_invite_async(player: Player, username: str, battle_format:
         print(f"Attempting to send challenge from {player.username} to {username} in format {battle_format}")
         print(player) # Keep this for debugging if needed
         # Pass the battle_format if you want it to be different from player's default
-        await player.send_challenges(username, n_challenges=1, battle_format=battle_format) # Pass format here
+        await player.send_challenges(username, n_challenges=1) # Pass format here
         return f"Battle invitation ({battle_format}) sent to {username} from bot {player.username}! Check Showdown."
     except Exception as e:
         # Log the full error for debugging
