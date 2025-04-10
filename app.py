@@ -25,13 +25,6 @@ custom_config = ServerConfiguration(
 )
 
 
-# Define distinct account configurations
-# IMPORTANT: Replace with your actual bot usernames/passwords or leave None for guest accounts
-# Using the usernames from your original app.py for RandomPlayer
-random_account_config = AccountConfiguration("huggingface_random", None) # Replace password or set None
-# Define a different username for the OpenAI agent
-openai_account_config = AccountConfiguration("hgface_openai_bot", None) # Replace or set None
-
 DEFAULT_BATTLE_FORMAT = "gen9randombattle"
 
 # --- Agent Initialization ---
@@ -51,7 +44,6 @@ def initialize_agents_sync():
             # Initialize Random Player
             print(f"Initializing RandomPlayer ({random_account_config.username})...")
             random_player = RandomPlayer(
-                account_configuration=random_account_config,
                 server_configuration=custom_config,
                 battle_format=DEFAULT_BATTLE_FORMAT
             )
@@ -61,7 +53,6 @@ def initialize_agents_sync():
             print(f"Initializing OpenAIAgent ({openai_account_config.username})...")
             # Ensure API key is available via .env (checked inside OpenAIAgent.__init__)
             openai_agent = OpenAIAgent(
-                account_configuration=openai_account_config,
                 server_configuration=custom_config,
                 battle_format=DEFAULT_BATTLE_FORMAT
             )
