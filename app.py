@@ -8,7 +8,7 @@ import os
 from poke_env.player import Player, RandomPlayer
 from poke_env import AccountConfiguration,ServerConfiguration
 # Import your custom agent
-from agent import OpenAIAgent
+from agents import OpenAIAgent
 
 
 # --- Global variables for players and thread ---
