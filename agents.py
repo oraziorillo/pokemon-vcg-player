@@ -1,32 +1,37 @@
+# agent.py
 import os
 import json
 import asyncio
 import random
 from openai import AsyncOpenAI  # Use AsyncOpenAI for async compatibility with poke-env
 
+# Import necessary poke-env components for type hinting and functionality
 from poke_env.player import Player
 from poke_env.environment.battle import Battle
 from poke_env.environment.move import Move
 from poke_env.environment.pokemon import Pokemon
-from poke_env.player import Player, Observation
-
+from poke_env.player import Observation # Observation might not be directly used here, but good to keep if extending
 
 
 class OpenAIAgent(Player):
     """
     An AI agent for Pokemon Showdown that uses OpenAI's API
     with function calling to decide its moves.
+    Requires OPENAI_API_KEY environment variable to be set.
     """
     def __init__(self, *args, **kwargs):
+        # Pass account_configuration and other Player args/kwargs to the parent
         super().__init__(*args, **kwargs)
 
         # Initialize OpenAI client
+        # It's slightly better practice to get the key here rather than relying solely on the global env scope
         api_key = os.environ["OPENAI_API_KEY"]
         if not api_key:
-            raise ValueError("OPENAI_API_KEY environment variable not set.")
+            raise ValueError("OPENAI_API_KEY environment variable not set or loaded.")
+
         # Use AsyncOpenAI for compatibility with poke-env's async nature
         self.openai_client = AsyncOpenAI(api_key=api_key)
-        self.model = "gpt-4o" # Or "gpt-4-turbo-preview", "gpt-4" etc.
+        self.model = "gpt-4o" # Or "gpt-3.5-turbo", "gpt-4-turbo-preview", etc.
 
         # Define the functions OpenAI can "call"
         self.functions = [
@@ -59,10 +64,10 @@ class OpenAIAgent(Player):
                 },
             },
         ]
+        self.battle_history = [] # Optional: To potentially add context later
 
     def _format_battle_state(self, battle: Battle) -> str:
         """Formats the current battle state into a string for the LLM."""
-
         # Own active Pokemon details
         active_pkmn = battle.active_pokemon
         active_pkmn_info = f"Your active Pokemon: {active_pkmn.species} " \
@@ -176,8 +181,8 @@ class OpenAIAgent(Player):
         """
         # 1. Format battle state
         battle_state_str = self._format_battle_state(battle)
-        # print(f"\n--- Turn {battle.turn} ---")
-        # print(battle_state_str) # Optional: print state for debugging
+        # print(f"\n--- Turn {battle.turn} ---") # Debugging
+        # print(battle_state_str) # Debugging
 
         # 2. Get decision from OpenAI
         decision = await self._get_openai_decision(battle_state_str)
@@ -217,6 +222,7 @@ class OpenAIAgent(Player):
         # Ensure options exist before choosing randomly
         available_options = battle.available_moves + battle.available_switches
         if available_options:
+             # Use the built-in random choice method from Player for fallback
              return self.choose_random_move(battle)
         else:
              # Should only happen if forced to Struggle
