@@ -8,6 +8,8 @@ import threading
 random_player = None
 player_thread = None
 
+from poke_env import Player, ServerConfiguration
+custom_config = ServerConfiguration("ws://jofthomas.com/showdown/websocket", "authentication-endpoint.com/action.php?")
 # Function to start the random player in a separate thread
 def start_random_player():
     loop = asyncio.new_event_loop()
@@ -16,7 +18,7 @@ def start_random_player():
     
     random_player = RandomPlayer(
         account_configuration=AccountConfiguration("huggingface_random", "huggingface_random"),
-        server_configuration=ShowdownServerConfiguration,
+        server_configuration=custom_config,
     )
     
 
