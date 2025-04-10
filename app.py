@@ -102,7 +102,7 @@ async def send_battle_invite_async(player: Player, username: str, battle_format:
     try:
         print(f"Attempting to send challenge from {player.username} to {username} in format {battle_format}")
         # Using send_challenges which should handle login implicitly if needed
-        await player.send_challenges(username, n_challenges=1, packed_team=None, battle_format=battle_format)
+        await player.send_challenges(username, n_challenges=1, battle_format=battle_format)
         return f"Battle invitation ({battle_format}) sent to {username} from bot {player.username}! Check Showdown."
     except Exception as e:
         # Log the full error for debugging
