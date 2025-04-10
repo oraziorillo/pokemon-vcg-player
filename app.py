@@ -13,6 +13,10 @@ custom_config = ServerConfiguration(
     "wss://jofthomas.com/showdown/websocket",          # WebSocket URL
     "https://jofthomas.com/showdown/action.php"         # Authentication URL
 )# Function to start the random player in a separate thread
+random_player = RandomPlayer(
+    account_configuration=AccountConfiguration("huggingface_random", "huggingface_random"),
+    server_configuration=custom_config,
+)
 def start_random_player():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -66,7 +70,7 @@ iframe_code = """
 
 def main():
     # Initialize the random player when the app starts
-    initialize_random_player()
+    #initialize_random_player()
     
     with gr.Blocks() as demo:
         gr.Markdown("# Pokémon Showdown Battle Bot")
