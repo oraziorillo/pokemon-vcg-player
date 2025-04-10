@@ -52,7 +52,7 @@ def invite_to_battle(username):
 # iframe code to embed Pokemon Showdown
 iframe_code = """
 <iframe
-    src="https://jofthomas.com"
+    src="https://jofthomas.com/play.pokemonshowdown.com/testclient.html"
     width="100%"
     height="800"
     style="border: none;"
