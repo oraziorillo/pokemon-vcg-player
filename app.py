@@ -3,6 +3,7 @@ import gradio as gr
 import asyncio
 import threading
 import os
+import random # <-- Import the random module
 
 # Import poke-env components
 from poke_env.player import Player, RandomPlayer
@@ -24,6 +25,32 @@ custom_config = ServerConfiguration(
      "https://jofthomas.com/showdown/action.php" # Authentication URL
 )
 
+# --- Dynamic Account Configuration ---
+# Define base names for the bots
+RANDOM_PLAYER_BASE_NAME = "RandomAgent"
+OPENAI_AGENT_BASE_NAME = "OpenAIBot" # You can change this if you like
+
+# Generate random suffixes (4-6 digits, i.e., 1000 to 999999)
+random_player_suffix = random.randint(1000, 999999)
+openai_agent_suffix = random.randint(1000, 999999)
+
+# Optional: Ensure suffixes are different if base names happen to be the same
+# This is very unlikely but good practice if base names could be identical.
+# If base names are distinct (like here), this check isn't strictly needed.
+# while RANDOM_PLAYER_BASE_NAME == OPENAI_AGENT_BASE_NAME and random_player_suffix == openai_agent_suffix:
+#      openai_agent_suffix = random.randint(1000, 999999)
+
+# Construct full usernames
+random_player_username = f"{RANDOM_PLAYER_BASE_NAME}{random_player_suffix}"
+openai_agent_username = f"{OPENAI_AGENT_BASE_NAME}{openai_agent_suffix}"
+
+# Create AccountConfiguration objects with dynamic usernames and no password (guest)
+random_account_config = AccountConfiguration(random_player_username, None)
+openai_account_config = AccountConfiguration(openai_agent_username, None)
+
+# Optional: Print the generated usernames for confirmation when the script starts
+print(f"Using RandomPlayer username: {random_account_config.username}")
+print(f"Using OpenAIAgent username: {openai_account_config.username}")
 
 DEFAULT_BATTLE_FORMAT = "gen9randombattle"
 
@@ -41,16 +68,21 @@ def initialize_agents_sync():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            
+            # Initialize Random Player - PASSING THE CONFIGURATION
+            # Use the dynamically generated username from random_account_config
+            print(f"Initializing RandomPlayer ({random_account_config.username})...")
             random_player = RandomPlayer(
+                account_configuration=random_account_config, # <-- Pass the config
                 server_configuration=custom_config,
                 battle_format=DEFAULT_BATTLE_FORMAT
             )
             print("RandomPlayer initialized.")
 
-            # Initialize OpenAI Agent
-
+            # Initialize OpenAI Agent - PASSING THE CONFIGURATION
+            # Use the dynamically generated username from openai_account_config
+            print(f"Initializing OpenAIAgent ({openai_account_config.username})...")
             openai_agent = OpenAIAgent(
+                account_configuration=openai_account_config, # <-- Pass the config
                 server_configuration=custom_config,
                 battle_format=DEFAULT_BATTLE_FORMAT
             )
@@ -81,6 +113,7 @@ def start_agent_initialization():
         print("Initialization thread already running.")
 
 # --- Battle Invitation Logic ---
+# Using player.username SHOULD automatically use the assigned username
 async def send_battle_invite_async(player: Player, username: str, battle_format: str = DEFAULT_BATTLE_FORMAT):
     """Sends a challenge using the provided player object."""
     if player is None:
@@ -88,15 +121,18 @@ async def send_battle_invite_async(player: Player, username: str, battle_format:
     if not username or not username.strip():
          return "Error: Please enter a valid Showdown username."
     try:
+        # player.username should reflect the name set in AccountConfiguration
         print(f"Attempting to send challenge from {player.username} to {username} in format {battle_format}")
-        print(player)
-        # Using send_challenges which should handle login implicitly if needed
-        await player.send_challenges(username, n_challenges=1)
+        print(player) # Keep this for debugging if needed
+        # Pass the battle_format if you want it to be different from player's default
+        await player.send_challenges(username, n_challenges=1, battle_format=battle_format) # Pass format here
         return f"Battle invitation ({battle_format}) sent to {username} from bot {player.username}! Check Showdown."
     except Exception as e:
         # Log the full error for debugging
         import traceback
-        print(f"Error sending challenge from {player.username}:")
+        # Make sure player.username exists even if there's an error before login completes
+        player_name = getattr(player, 'username', 'unknown player')
+        print(f"Error sending challenge from {player_name}:")
         traceback.print_exc() # Print stack trace
         return f"Error sending challenge: {str(e)}. Check console logs."
 
@@ -145,12 +181,15 @@ def invite_to_battle(agent_choice: str, username: str):
         if loop.is_running():
             # Schedule the coroutine and wait for its result
             future = asyncio.run_coroutine_threadsafe(
-                send_battle_invite_async(selected_player, username_clean), loop
+                # Pass the default battle format explicitly if needed
+                send_battle_invite_async(selected_player, username_clean, DEFAULT_BATTLE_FORMAT),
+                loop
             )
             result = future.result(timeout=30) # Add a timeout
         else:
              result = loop.run_until_complete(
-                 send_battle_invite_async(selected_player, username_clean)
+                 # Pass the default battle format explicitly if needed
+                 send_battle_invite_async(selected_player, username_clean, DEFAULT_BATTLE_FORMAT)
              )
 
         return result
