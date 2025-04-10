@@ -1,3 +1,4 @@
 # Requirements for Pokemon Showdown interaction
 poke-env==0.8.3
 gradio
+openai
