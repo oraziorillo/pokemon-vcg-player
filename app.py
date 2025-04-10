@@ -41,8 +41,7 @@ def initialize_agents_sync():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            # Initialize Random Player
-            print(f"Initializing RandomPlayer ({random_account_config.username})...")
+            
             random_player = RandomPlayer(
                 server_configuration=custom_config,
                 battle_format=DEFAULT_BATTLE_FORMAT
@@ -50,8 +49,7 @@ def initialize_agents_sync():
             print("RandomPlayer initialized.")
 
             # Initialize OpenAI Agent
-            print(f"Initializing OpenAIAgent ({openai_account_config.username})...")
-            # Ensure API key is available via .env (checked inside OpenAIAgent.__init__)
+
             openai_agent = OpenAIAgent(
                 server_configuration=custom_config,
                 battle_format=DEFAULT_BATTLE_FORMAT
