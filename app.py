@@ -87,9 +87,9 @@ async def send_battle_invite_async(player: Player, username: str, battle_format:
         return "Error: The selected player is not available/initialized."
     if not username or not username.strip():
          return "Error: Please enter a valid Showdown username."
-
     try:
         print(f"Attempting to send challenge from {player.username} to {username} in format {battle_format}")
+        print(player)
         # Using send_challenges which should handle login implicitly if needed
         await player.send_challenges(username, n_challenges=1)
         return f"Battle invitation ({battle_format}) sent to {username} from bot {player.username}! Check Showdown."
