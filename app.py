@@ -14,7 +14,6 @@ custom_config = ServerConfiguration(
     "https://jofthomas.com/showdown/action.php"         # Authentication URL
 )# Function to start the random player in a separate thread
 random_player = RandomPlayer(
-    account_configuration=AccountConfiguration("huggingface_random", "huggingface_random"),
     server_configuration=custom_config,
 )
 def start_random_player():
