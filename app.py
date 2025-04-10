@@ -178,7 +178,7 @@ def invite_to_battle(agent_choice: str, username: str):
 # iframe code to embed Pokemon Showdown (using official URL)
 iframe_code = """
 <iframe
-    src="https://play.pokemonshowdown.com/"
+    src="https://jofthomas.com/play.pokemonshowdown.com/testclient.html"
     width="100%"
     height="800"
     style="border: none;"
@@ -191,31 +191,43 @@ def main_app():
     # Start agent initialization when the app is defined/loaded
     start_agent_initialization()
 
+    # Using gr.Blocks. The default layout should stretch reasonably wide.
     with gr.Blocks(title="Pokemon Showdown Bot") as demo:
         gr.Markdown("# Pokémon Showdown Battle Bot")
-        gr.Markdown("Select a bot agent, enter **your** Showdown username (the one you are logged in with below), and click Send Invite.")
+        gr.Markdown(
+            "Select a bot agent, enter **your** Showdown username "
+            "(the one you are logged in with below), and click Send Invite."
+        )
 
+        # --- Row for Controls at the Top ---
         with gr.Row():
-            with gr.Column(scale=1):
-                gr.Markdown("### Configuration")
-                agent_dropdown = gr.Dropdown(
-                    label="Select Bot Agent",
-                    choices=["Random Player", "OpenAI Agent"],
-                    value="Random Player" # Default choice
-                )
-                name_input = gr.Textbox(
-                    label="Your Pokémon Showdown Username",
-                    placeholder="Enter username used in Showdown below"
-                )
-                battle_button = gr.Button("Send Battle Invitation")
-                status_output = gr.Textbox(label="Status", interactive=False, lines=2) # Added for feedback
+            # Place controls here
+            agent_dropdown = gr.Dropdown(
+                label="Select Bot Agent",
+                choices=["Random Player", "OpenAI Agent"],
+                value="Random Player",
+                scale=1 # Give dropdown reasonable space
+            )
+            name_input = gr.Textbox(
+                label="Your Pokémon Showdown Username",
+                placeholder="Enter username used in Showdown below",
+                scale=2 # Give name input more relative space
+            )
+            battle_button = gr.Button("Send Battle Invitation", scale=1) # Button takes less space
+            status_output = gr.Textbox(
+                label="Status",
+                interactive=False,
+                lines=1, # Keep status compact initially
+                scale=2 # Give status reasonable space
+            )
 
-            with gr.Column(scale=3):
-                gr.Markdown("### Pokémon Showdown Interface")
-                gr.Markdown("Log in/use the username you entered above.")
-                gr.HTML(iframe_code)
+        # --- Section for the IFrame below the controls ---
+        gr.Markdown("### Pokémon Showdown Interface")
+        gr.Markdown("Log in/use the username you entered above.")
+        # The HTML component containing the iframe will take up the available width
+        gr.HTML(iframe_code)
 
-        # Connect button click to the invitation function
+        # --- Connect button click to the invitation function ---
         battle_button.click(
             fn=invite_to_battle,
             inputs=[agent_dropdown, name_input],
@@ -229,4 +241,5 @@ if __name__ == "__main__":
     # Create and launch the Gradio app
     app = main_app()
     # You might need to configure server_name and server_port depending on your deployment environment
+    # Use app.launch(share=True) for a public link (if needed and safe)
     app.launch() # server_name="0.0.0.0" # To make accessible on network
