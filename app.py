@@ -79,9 +79,8 @@ def main():
                 gr.Markdown("### Enter your Pokémon Showdown username to receive a battle invitation:")
                 name_input = gr.Textbox(label="Your Pokémon Showdown Username", placeholder="Enter the username you're using on Showdown")
                 battle_button = gr.Button("Send Battle Invitation")
-                result_text = gr.Textbox(label="Result", interactive=False)
                 
-                battle_button.click(fn=invite_to_battle, inputs=name_input, outputs=result_text)
+                battle_button.click(fn=invite_to_battle, inputs=name_input)
         
         gr.Markdown("### Pokémon Showdown Interface")
         gr.Markdown("Log in to Pokémon Showdown in the interface below, using the same username you entered above.")
