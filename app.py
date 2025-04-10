@@ -5,8 +5,8 @@ import threading
 import os
 
 # Import poke-env components
-from poke_env.player import Player, RandomPlayer, AccountConfiguration, ShowdownServerConfiguration
-
+from poke_env.player import Player, RandomPlayer
+from poke_env import AccountConfiguration,ServerConfiguration
 # Import your custom agent
 from agent import OpenAIAgent
 
@@ -19,7 +19,7 @@ init_lock = threading.Lock() # To prevent race conditions during init
 agents_initialized = False
 
 # --- Configuration ---
-custom_config = ShowdownServerConfiguration(
+custom_config = ServerConfiguration(
      "wss://jofthomas.com/showdown/websocket", # WebSocket URL
      "https://jofthomas.com/showdown/action.php" # Authentication URL
 )
