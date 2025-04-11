@@ -216,18 +216,19 @@ def main_app():
     start_agent_initialization()
 
     # Using gr.Blocks. The default layout should stretch reasonably wide.
-    with gr.Blocks(title="Pokemon Showdown Bot") as demo:
-        gr.Markdown("# Pokémon Showdown Battle Bot")
+    with gr.Blocks(title="Pokemon Showdown Agent") as demo:
+        gr.Markdown("# Pokémon Battle Agent")
         gr.Markdown(
-            "Select a bot agent, enter **your** Showdown username "
+            "Select an agent, enter **your** Showdown username "
             "(the one you are logged in with below), and click Send Invite."
+            "Note : you can just select a random set of character as long as someone registered does not already use this username"
         )
 
         # --- Row for Controls at the Top ---
         with gr.Row():
             # Place controls here
             agent_dropdown = gr.Dropdown(
-                label="Select Bot Agent",
+                label="Select Agent",
                 choices=["Random Player", "OpenAI Agent"],
                 value="Random Player",
                 scale=1 # Give dropdown reasonable space
@@ -238,12 +239,7 @@ def main_app():
                 scale=2 # Give name input more relative space
             )
             battle_button = gr.Button("Send Battle Invitation", scale=1) # Button takes less space
-            status_output = gr.Textbox(
-                label="Status",
-                interactive=False,
-                lines=1, # Keep status compact initially
-                scale=2 # Give status reasonable space
-            )
+
 
         # --- Section for the IFrame below the controls ---
         gr.Markdown("### Pokémon Showdown Interface")
@@ -255,7 +251,7 @@ def main_app():
         battle_button.click(
             fn=invite_to_battle,
             inputs=[agent_dropdown, name_input],
-            outputs=status_output # Display result/status here
+           
         )
 
     return demo
