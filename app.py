@@ -251,8 +251,8 @@ def main_app():
             value="Random Player",
             scale=1
         )
-        name_input = gr.Textbox(...)
-        battle_button = gr.Button(...)
+        name_input = gr.Textbox("your name")
+        battle_button = gr.Button('Battle invitation')
         gr.Markdown("### Pokémon Showdown Interface")
         gr.Markdown("Log in/use the username you entered above.")
         gr.HTML(iframe_code)
