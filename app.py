@@ -3,7 +3,7 @@ import gradio as gr
 import asyncio
 import threading
 import os
-import random # <-- Import the random module
+import random 
 
 # Import poke-env components
 from poke_env.player import Player, RandomPlayer
@@ -16,19 +16,19 @@ from agents import OpenAIAgent
 random_player: Player | None = None
 openai_agent: Player | None = None
 agent_init_thread: threading.Thread | None = None
-init_lock = threading.Lock() # To prevent race conditions during init
+init_lock = threading.Lock()
 agents_initialized = False
 
 # --- Configuration ---
 custom_config = ServerConfiguration(
-     "wss://jofthomas.com/showdown/websocket", # WebSocket URL
-     "https://jofthomas.com/showdown/action.php" # Authentication URL
+     "wss://jofthomas.com/showdown/websocket", 
+     "https://jofthomas.com/showdown/action.php" 
 )
 
 # --- Dynamic Account Configuration ---
 # Define base names for the bots
 RANDOM_PLAYER_BASE_NAME = "RandomAgent"
-OPENAI_AGENT_BASE_NAME = "OpenAIAgent" # You can change this if you like
+OPENAI_AGENT_BASE_NAME = "OpenAIAgent"
 
 DEFAULT_BATTLE_FORMAT = "gen9randombattle"
 
@@ -48,7 +48,7 @@ def initialize_agents_sync():
     
     # Create AccountConfiguration objects with dynamic usernames and no password (guest)
     random_account_config = AccountConfiguration(random_player_username, None)
-    openai_account_config = AccountConfiguration(openai_agent_username, None)
+    openai_account_config = AccountConfiguration(OPENAI_AGENT_BASE_NAME, os.environ['SHOWDOWN_PSWD'])
     
     # Optional: Print the generated usernames for confirmation when the script starts
     print(f"Using RandomPlayer username: {random_account_config.username}")
