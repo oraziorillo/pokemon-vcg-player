@@ -28,29 +28,7 @@ custom_config = ServerConfiguration(
 # --- Dynamic Account Configuration ---
 # Define base names for the bots
 RANDOM_PLAYER_BASE_NAME = "RandomAgent"
-OPENAI_AGENT_BASE_NAME = "OpenAIBot" # You can change this if you like
-
-# Generate random suffixes (4-6 digits, i.e., 1000 to 999999)
-random_player_suffix = random.randint(1000, 999999)
-openai_agent_suffix = random.randint(1000, 999999)
-
-# Optional: Ensure suffixes are different if base names happen to be the same
-# This is very unlikely but good practice if base names could be identical.
-# If base names are distinct (like here), this check isn't strictly needed.
-# while RANDOM_PLAYER_BASE_NAME == OPENAI_AGENT_BASE_NAME and random_player_suffix == openai_agent_suffix:
-#      openai_agent_suffix = random.randint(1000, 999999)
-
-# Construct full usernames
-random_player_username = f"{RANDOM_PLAYER_BASE_NAME}{random_player_suffix}"
-openai_agent_username = f"{OPENAI_AGENT_BASE_NAME}{openai_agent_suffix}"
-
-# Create AccountConfiguration objects with dynamic usernames and no password (guest)
-random_account_config = AccountConfiguration(random_player_username, None)
-openai_account_config = AccountConfiguration(openai_agent_username, None)
-
-# Optional: Print the generated usernames for confirmation when the script starts
-print(f"Using RandomPlayer username: {random_account_config.username}")
-print(f"Using OpenAIAgent username: {openai_account_config.username}")
+OPENAI_AGENT_BASE_NAME = "OpenAIAgent" # You can change this if you like
 
 DEFAULT_BATTLE_FORMAT = "gen9randombattle"
 
@@ -58,6 +36,24 @@ DEFAULT_BATTLE_FORMAT = "gen9randombattle"
 def initialize_agents_sync():
     """Initializes both player agents in a background thread."""
     global random_player, openai_agent, agents_initialized
+    
+    # Generate random suffixes (4-6 digits, i.e., 1000 to 999999)
+    random_player_suffix = random.randint(1000, 999999)
+    openai_agent_suffix = random.randint(1000, 999999)
+    
+    
+    # Construct full usernames
+    random_player_username = f"{RANDOM_PLAYER_BASE_NAME}{random_player_suffix}"
+    openai_agent_username = f"{OPENAI_AGENT_BASE_NAME}{openai_agent_suffix}"
+    
+    # Create AccountConfiguration objects with dynamic usernames and no password (guest)
+    random_account_config = AccountConfiguration(random_player_username, None)
+    openai_account_config = AccountConfiguration(openai_agent_username, None)
+    
+    # Optional: Print the generated usernames for confirmation when the script starts
+    print(f"Using RandomPlayer username: {random_account_config.username}")
+    print(f"Using OpenAIAgent username: {openai_account_config.username}")
+
     # Ensure this runs only once
     with init_lock:
         if agents_initialized:
