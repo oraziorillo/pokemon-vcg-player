@@ -244,8 +244,13 @@ def main_app():
     with gr.Blocks(title="Pokemon Showdown Agent") as demo:
         # ... (rest of your UI definition is likely fine) ...
         gr.Markdown("# Pokémon Battle Agent")
-        # ... etc ...
-        agent_dropdown = gr.Dropdown(...)
+
+          agent_dropdown = gr.Dropdown(
+            label="Select Agent",
+            choices=["Random Player", "OpenAI Agent"], 
+            value="Random Player",
+            scale=1
+        )
         name_input = gr.Textbox(...)
         battle_button = gr.Button(...)
         gr.Markdown("### Pokémon Showdown Interface")
@@ -257,6 +262,7 @@ def main_app():
             inputs=[agent_dropdown, name_input],
             outputs=gr.Textbox(label="Status") # Add an output Textbox to display results/errors
         )
+      
 
     return demo
 
