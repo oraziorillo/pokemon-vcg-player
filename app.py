@@ -245,7 +245,7 @@ def main_app():
         # ... (rest of your UI definition is likely fine) ...
         gr.Markdown("# Pokémon Battle Agent")
 
-          agent_dropdown = gr.Dropdown(
+        agent_dropdown = gr.Dropdown(
             label="Select Agent",
             choices=["Random Player", "OpenAI Agent"], 
             value="Random Player",
