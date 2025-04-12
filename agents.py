@@ -10,7 +10,7 @@ from poke_env.player import Player
 from poke_env.environment.battle import Battle
 from poke_env.environment.move import Move
 from poke_env.environment.pokemon import Pokemon
-
+from tools import toolsList
 
 class OpenAIAgent(Player):
     """
@@ -33,36 +33,7 @@ class OpenAIAgent(Player):
         self.model = "gpt-4o" # Or "gpt-3.5-turbo", "gpt-4-turbo-preview", etc.
 
         # Define the functions OpenAI can "call"
-        self.functions = [
-            {
-                "name": "choose_move",
-                "description": "Selects and executes an available attacking or status move.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "move_name": {
-                            "type": "string",
-                            "description": "The exact name of the move to use (e.g., 'Thunderbolt', 'Swords Dance'). Must be one of the available moves.",
-                        },
-                    },
-                    "required": ["move_name"],
-                },
-            },
-            {
-                "name": "choose_switch",
-                "description": "Selects an available Pokémon from the bench to switch into.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "pokemon_name": {
-                            "type": "string",
-                            "description": "The exact name of the Pokémon species to switch to (e.g., 'Pikachu', 'Charizard'). Must be one of the available switches.",
-                        },
-                    },
-                    "required": ["pokemon_name"],
-                },
-            },
-        ]
+        self.functions = toolsList
         self.battle_history = [] # Optional: To potentially add context later
 
     def _format_battle_state(self, battle: Battle) -> str:
