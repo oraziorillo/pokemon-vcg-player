@@ -1,4 +1,4 @@
-tollsList=[
+toolsList=[
             {
                 "name": "choose_move",
                 "description": "Selects and executes an available attacking or status move.",
