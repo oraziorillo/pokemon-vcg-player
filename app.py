@@ -209,8 +209,6 @@ def main_app():
                 label="Your Pokémon Showdown Username", placeholder="Enter username used in Showdown below", scale=2
             )
             battle_button = gr.Button("Send Battle Invitation", variant="primary", scale=1)
-        gr.Markdown("### Pokémon Showdown Interface")
-        gr.Markdown("Log in below using the username you entered above, then wait for the challenge(s). Check console logs for detailed background activity.")
         gr.HTML("""
         <iframe
             src="https://jofthomas.com/play.pokemonshowdown.com/testclient.html"
