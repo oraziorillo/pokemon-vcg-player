@@ -233,8 +233,5 @@ def main_app():
 # --- Application Entry Point ---
 # [ if __name__ == "__main__": block remains the same ]
 if __name__ == "__main__":
-    if HAS_OPENAI_AGENT and not os.getenv("OPENAI_API_KEY"):
-         logging.warning("OPENAI_API_KEY environment variable not set. OpenAI Agent will not function.")
-
     app = main_app()
     app.launch()
