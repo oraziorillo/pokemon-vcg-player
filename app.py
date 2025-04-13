@@ -90,7 +90,7 @@ async def send_battle_invite_async(player: Player, opponent_username: str, battl
 
     try:
         print(f"Attempting to send challenge from {player_username} to {opponent_username} in format {battle_format}")
-        await player.send_challenges(opponent_username, n_challenges=1, packed_team=None, battle_format=battle_format) # Specify format if needed
+        await player.send_challenges(opponent_username, n_challenges=1) 
         print(f"Challenge sent successfully from {player_username} to {opponent_username}.")
         return f"Battle invitation ({battle_format}) sent to {opponent_username} from bot {player_username}! Check Showdown."
 
@@ -174,8 +174,6 @@ def main_app():
             )
             battle_button = gr.Button("Send Battle Invitation", scale=1)
 
-        status_output = gr.Textbox(label="Status", interactive=False)
-
         gr.Markdown("### Pokémon Showdown Interface")
         gr.Markdown("Log in/use the username you entered above.")
         gr.HTML(iframe_code)
@@ -183,7 +181,6 @@ def main_app():
         battle_button.click(
             fn=invite_to_battle,
             inputs=[agent_dropdown, name_input],
-            outputs=[status_output] # Connect output to the status box
         )
 
     return demo
