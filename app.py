@@ -208,12 +208,8 @@ def main_app():
                 label="Your Pokémon Showdown Username", placeholder="Enter username used in Showdown below", scale=2
             )
             battle_button = gr.Button("Send Battle Invitation", variant="primary", scale=1)
-
-        status_output = gr.Textbox(label="Status", interactive=False, placeholder="Status messages will appear here...") # Added placeholder
-
         gr.Markdown("### Pokémon Showdown Interface")
         gr.Markdown("Log in below using the username you entered above, then wait for the challenge(s). Check console logs for detailed background activity.")
-        # Use the official site
         gr.HTML("""
         <iframe
             src="https://jofthomas.com/play.pokemonshowdown.com/testclient.html"
@@ -225,7 +221,6 @@ def main_app():
         battle_button.click(
             fn=start_invite_thread, # Calls the function that starts the thread
             inputs=[agent_dropdown, name_input],
-            outputs=[status_output] # Displays the immediate "started..." message
         )
 
     return demo
