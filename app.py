@@ -52,10 +52,6 @@ async def create_agent_async(agent_type: str, battle_format: str = DEFAULT_BATTL
                 start_listening=True,
             )
         elif agent_type == "OpenAI Agent":
-            if not HAS_OPENAI_AGENT:
-                 error_message = "Error: OpenAIAgent is not available (failed import)."
-                 logging.error(error_message)
-                 return error_message
             if not os.getenv("OPENAI_API_KEY"):
                  error_message = "Error: Cannot create OpenAI Agent. OPENAI_API_KEY environment variable is missing."
                  logging.error(error_message)
@@ -192,8 +188,7 @@ def main_app():
     """Creates and returns the Gradio application interface."""
 
     agent_options = ["Random Player"]
-    if HAS_OPENAI_AGENT:
-        agent_options.append("OpenAI Agent")
+    agent_options.append("OpenAI Agent")
 
     # Use a more descriptive title if possible
     with gr.Blocks(title="Pokemon Showdown Multi-Challenger") as demo:
