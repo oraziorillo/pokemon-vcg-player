@@ -25,6 +25,13 @@ OPENAI_AGENT_BASE_NAME = "OpenAIAgent"
 DEFAULT_BATTLE_FORMAT = "gen9randombattle"
 custom_config = ServerConfiguration(POKE_SERVER_URL, POKE_AUTH_URL)
 
+
+# button HEX code
+my_hex_color = "#ffca19" # Example: Orange
+# text color
+my_text_color = "#FFFFFF" # Example: White
+
+
 # --- Agent Creation (Async - Required by poke-env) ---
 # [ create_agent_async function remains exactly the same as the previous version ]
 async def create_agent_async(agent_type: str, battle_format: str = DEFAULT_BATTLE_FORMAT) -> Player | str:
@@ -208,7 +215,30 @@ def main_app():
             name_input = gr.Textbox(
                 label="Your Pokémon Showdown Username", placeholder="Enter username used in Showdown below", scale=2
             )
-            battle_button = gr.Button("Send Battle Invitation", variant="primary", scale=1)
+          
+            battle_button = gr.Button(
+                "Send Battle Invitation",
+                variant="primary", # Keep variant or remove if CSS overrides all styles
+                scale=1,
+                elem_id="custom-color-button" # Assign a unique ID
+            )
+            
+            # 2. The required CSS (place this *within* the same gr.Blocks() context)
+            #    This targets the button using its ID.
+            #    You might need !important to override Gradio's default theme styles.
+            #    Adjust text color ('color') for readability against your chosen background.
+            gr.CSS(f"""
+                #custom-color-button {{
+                    background-color: {my_hex_color} !important;
+                    color: {my_text_color} !important;
+                    border: none !important; /* Optional: remove border */
+                    /* Add other styles like border-radius if needed */
+                }}
+                /* Optional: Style for hover effect */
+                #custom-color-button:hover {{
+                    background-color: darken({my_hex_color}, 10%) !important; /* Make it slightly darker on hover */
+                }}
+            """)
         gr.HTML("""
         <iframe
             src="https://jofthomas.com/play.pokemonshowdown.com/testclient.html"
