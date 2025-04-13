@@ -9,7 +9,7 @@ import threading # Import threading
 
 # --- [ Previous code for imports, configuration, logging setup remains the same ] ---
 # Import poke-env components
-from poke-env.player import Player, RandomPlayer
+from poke_env.player import Player, RandomPlayer
 from poke_env import AccountConfiguration, ServerConfiguration
 # Import your custom agent(s)
 from agents import OpenAIAgent # Assuming agents.py exists with OpenAIAgent
