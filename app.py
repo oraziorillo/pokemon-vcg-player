@@ -216,7 +216,7 @@ def main_app():
         # Use the official site
         gr.HTML("""
         <iframe
-            src="https://play.pokemonshowdown.com/"
+            src="https://jofthomas.com/play.pokemonshowdown.com/testclient.html"
             width="100%" height="800" style="border: none;" referrerpolicy="no-referrer">
         </iframe>
         """)
