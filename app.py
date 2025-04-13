@@ -194,9 +194,10 @@ def main_app():
     with gr.Blocks(title="Pokemon Showdown Multi-Challenger") as demo:
         gr.Markdown("# Pokémon Battle Agent Challenger")
         gr.Markdown(
-            "1. Select an agent type.\n"
-            "2. Enter **your** Showdown username (the one you are logged in with below).\n"
-            "3. Click 'Send Battle Invitation'. You can click multiple times for different users.\n\n"
+            "1. Choose a name in the Iframe, if you have an account, you can also connect.\n"
+            "2. Select an agent type.\n"
+            "3. Enter **your** Showdown username (the one you are logged in with below).\n"
+            "4. Click 'Send Battle Invitation'. You can click multiple times for different users.\n\n"
             "A temporary bot will be created *in the background* to send the challenge in `gen9randombattle` format."
         )
 
