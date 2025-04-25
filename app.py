@@ -5,14 +5,13 @@ import os
 import random
 import traceback
 import logging
-import threading # Import threading
+import threading 
 
-# --- [ Previous code for imports, configuration, logging setup remains the same ] ---
-# Import poke-env components
+
 from poke_env.player import Player, RandomPlayer
 from poke_env import AccountConfiguration, ServerConfiguration
-# Import your custom agent(s)
-from agents import OpenAIAgent # Assuming agents.py exists with OpenAIAgent
+
+from agents import OpenAIAgent 
 
 # --- Configuration ---
 POKE_SERVER_URL = "wss://jofthomas.com/showdown/websocket"
@@ -27,7 +26,6 @@ custom_config = ServerConfiguration(POKE_SERVER_URL, POKE_AUTH_URL)
 
 
 # --- Agent Creation (Async - Required by poke-env) ---
-# [ create_agent_async function remains exactly the same as the previous version ]
 async def create_agent_async(agent_type: str, battle_format: str = DEFAULT_BATTLE_FORMAT) -> Player | str:
     """
     Creates and initializes a SINGLE agent instance with a unique username.
@@ -37,7 +35,7 @@ async def create_agent_async(agent_type: str, battle_format: str = DEFAULT_BATTL
     logging.info(f"Attempting to create agent of type: {agent_type}")
     player: Player | None = None
     error_message: str | None = None
-    username: str = "unknown_agent" # Default for logging in case of early failure
+    username: str = "unknown_agent"
 
     agent_suffix = random.randint(10000, 999999)
 
@@ -81,7 +79,6 @@ async def create_agent_async(agent_type: str, battle_format: str = DEFAULT_BATTL
         return error_message
 
 # --- Battle Invitation (Async - Required by poke-env) ---
-# [ send_battle_invite_async function remains exactly the same as the previous version ]
 async def send_battle_invite_async(player: Player, opponent_username: str, battle_format: str) -> str:
     """
     Sends a challenge using the provided player object.
