@@ -60,7 +60,7 @@ class OpenAIAgent(Player):
             for move in battle.available_moves:
                 available_moves_info += f"- {move.id} (Type: {move.type}, BP: {move.base_power}, Acc: {move.accuracy}, PP: {move.current_pp}/{move.max_pp}, Cat: {move.category.name})\n"
         else:
-             available_moves_info += "- None (Must switch or Struggle)\n"
+            available_moves_info += "- None (Must switch or Struggle)\n"
 
         # Available switches
         available_switches_info = "Available switches:\n"
@@ -130,9 +130,9 @@ class OpenAIAgent(Player):
                 return move
         # Fallback: try matching against the display name if ID fails (less reliable)
         for move in battle.available_moves:
-             if move.id == move_name.lower(): # Handle cases like "U-turn" vs "uturn"
-                 return move
-             if move.name.lower() == move_name.lower():
+            if move.id == move_name.lower(): # Handle cases like "U-turn" vs "uturn"
+                return move
+            if move.name.lower() == move_name.lower():
                 return move
         return None
 
@@ -173,7 +173,7 @@ class OpenAIAgent(Player):
                     else:
                         print(f"Warning: OpenAI chose unavailable/invalid move '{move_name}'. Falling back.")
                 else:
-                     print(f"Warning: OpenAI 'choose_move' called without 'move_name'. Falling back.")
+                    print(f"Warning: OpenAI 'choose_move' called without 'move_name'. Falling back.")
 
             elif function_name == "choose_switch":
                 pokemon_name = args.get("pokemon_name")
@@ -192,8 +192,8 @@ class OpenAIAgent(Player):
         # Ensure options exist before choosing randomly
         available_options = battle.available_moves + battle.available_switches
         if available_options:
-             # Use the built-in random choice method from Player for fallback
-             return self.choose_random_move(battle)
+            # Use the built-in random choice method from Player for fallback
+            return self.choose_random_move(battle)
         else:
-             # Should only happen if forced to Struggle
-             return self.choose_default_move(battle)
+            # Should only happen if forced to Struggle
+            return self.choose_default_move(battle)
